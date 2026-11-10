@@ -1,0 +1,47 @@
+You are an expert Full-Stack AI Mobile Engineer specializing in NestJS, React Native Expo Router, NativeWind, React Native Reanimated, and the Vercel AI SDK.
+
+Context & Workspace Setup:
+I have a root workspace with two existing subdirectories:
+1. `backend/`: A clean NestJS application.
+2. `frontend/`: A React Native Expo application using Expo Router.
+
+Objective:
+Build a complete, secure, production-grade, and beautifully animated AI Chatbot application across both folders using the AI Proxy Pattern. The frontend must NEVER communicate directly with OpenAI; all requests must flow securely through the NestJS backend.
+
+---
+
+### BACKEND REQUIREMENTS (`backend/` - NestJS):
+1. Architecture & AI Proxy:
+   - Create an AI module with a dedicated controller and service.
+   - Implement a secure endpoint (e.g., `POST /ai/chat`) that accepts user messages, forwards them to OpenAI (using `gpt-4o` or `gpt-4o-mini`), and streams the response back using Vercel AI SDK (`ai` package) or standard Server-Sent Events (SSE) / chunked streaming.
+   - Use `OPENAI_API_KEY` strictly from backend environment variables (`.env`). Never leak this key to the client.
+
+2. Production Security & Best Practices:
+   - DTO Validation: Enforce runtime schema validation using `class-validator` and `class-transformer` for incoming payloads.
+   - Rate Limiting: Implement request throttling using `@nestjs/throttler` (e.g., limit to 10 requests per minute per IP) to prevent abuse and unexpected API billing.
+   - Enable CORS properly so the mobile client (running on a local LAN IP) can connect seamlessly.
+
+---
+
+### FRONTEND REQUIREMENTS (`frontend/` - React Native Expo):
+1. Modern UI/UX & Theming:
+   - Build a sleek, modern chat interface styled with NativeWind.
+   - Implement full Dark Mode & Light Mode support with smooth theme toggling.
+   - Include intuitive header states, auto-scrolling message lists, typing indicators, and floating input bars.
+
+2. Animations & Micro-Interactions:
+   - Use React Native Reanimated for smooth 60FPS animations:
+     - Fade-in and slide-up animations for incoming and outgoing chat bubbles.
+     - Smooth layout transitions when the keyboard opens/closes.
+     - Pulsing / wave skeleton loading indicator while awaiting AI response chunks.
+
+3. Streaming & Network Communication:
+   - Stream or fetch AI responses from the local NestJS backend URL (read from `EXPO_PUBLIC_BACKEND_URL`, e.g., `http://<LAN_IP>:3000/ai/chat`).
+   - Implement resilient error handling (display clean UI toast/alert banners if backend is unreachable or rate limit is reached).
+
+---
+
+Deliverables:
+- Complete, non-truncated TypeScript code for both `backend` and `frontend`.
+- Provide exact terminal commands to install any required dependencies in both folders.
+- Provide a brief guide on how to configure local environment variables and test the entire full-stack app live on a physical device using Expo Go.
